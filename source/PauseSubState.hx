@@ -362,7 +362,7 @@ class PauseSubState extends MusicBeatSubstate
 		            PlayState.chartingMode = true;
 
 				case 'Modchart Editor':
-		            MusicBeatState.switchState(new editors.ModchartEditorState());
+		            MusicBeatState.switchState(new ModchartEditorState());
 		            PlayState.chartingMode = true;
 
 				case "Options":

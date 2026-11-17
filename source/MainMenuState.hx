@@ -276,7 +276,7 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin && !ShortcutMenuSubState.inShortcutMenu)
 		{
-			if (controls.RESET || virtualPad.buttonY.justPressed)
+			if (controls.RESET/* || virtualPad.buttonY.justPressed*/)
 			{
 				ClientPrefs.saveSettings();
 				TitleState.initialized = false;

@@ -309,7 +309,7 @@ class CoolMenuState extends MusicBeatState
 				MusicBeatState.switchState(new TitleState());
 			}
 
-			if (FlxG.keys.justPressed.TAB || virtualPad.buttonX.justPressed)
+			if (FlxG.keys.justPressed.TAB/* || virtualPad.buttonX.justPressed*/)
 			{
 				openSubState(new ShortcutMenuSubState());
 				ShortcutMenuSubState.inShortcutMenu = true;
