@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="lose.png" width="784" height="2243" spritePadding="3" borderPadding="1">
+	<SubTexture name="lose... instance 10000" x="1" y="1292" width="776" height="205" frameX="-21" frameY="-68" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10001" x="1" y="1292" width="776" height="205" frameX="-21" frameY="-68" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10002" x="1" y="1960" width="762" height="282" frameX="-24" frameY="-37" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10003" x="1" y="1500" width="701" height="457" frameX="-48" frameY="0" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10004" x="1" y="382" width="781" height="199" frameX="0" frameY="-314" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10005" x="1" y="382" width="781" height="199" frameX="0" frameY="-314" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10006" x="1" y="945" width="781" height="172" frameX="0" frameY="-311" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10007" x="1" y="945" width="781" height="172" frameX="0" frameY="-311" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10008" x="1" y="1120" width="781" height="169" frameX="0" frameY="-318" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10009" x="1" y="1" width="782" height="191" frameX="0" frameY="-315" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10010" x="1" y="1" width="782" height="191" frameX="0" frameY="-315" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10011" x="1" y="766" width="781" height="176" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10012" x="1" y="766" width="781" height="176" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10013" x="1" y="195" width="782" height="184" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10014" x="1" y="195" width="782" height="184" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10015" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10016" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10017" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10018" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10019" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10020" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10021" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10022" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10023" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10024" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10025" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+	<SubTexture name="lose... instance 10026" x="1" y="584" width="781" height="179" frameX="0" frameY="-316" frameWidth="799" frameHeight="513"/>
+</TextureAtlas>

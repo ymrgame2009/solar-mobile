@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="phillyCars.png" width="912" height="439" spritePadding="3" borderPadding="1">
+	<SubTexture name="car10000" x="1" y="1" width="463" height="237" frameX="-5" frameY="-285" frameWidth="479" frameHeight="6000"/>
+	<SubTexture name="car20000" x="467" y="1" width="443" height="247" frameX="-17" frameY="-277" frameWidth="479" frameHeight="6000"/>
+	<SubTexture name="car30000" x="1" y="241" width="438" height="197" frameX="-18" frameY="-332" frameWidth="479" frameHeight="6000"/>
+	<SubTexture name="car40000" x="442" y="251" width="469" height="175" frameX="-4" frameY="-355" frameWidth="479" frameHeight="6000"/>
+</TextureAtlas>

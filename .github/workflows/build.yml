@@ -1,0 +1,139 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      buildArgs:
+        required: true
+        type: string
+      artifactName:
+        required: true
+        type: string
+      artifactPath:
+        required: true
+        type: string
+      expectedAbi:
+        required: false
+        type: string
+        default: ""
+
+env:
+  HAXE_VERSION: 4.2.5
+  PROJECT_NAME: SolarEngine
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Setup Android NDK
+        if: startsWith(inputs.name, 'Android')
+        uses: nttld/setup-ndk@main
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+
+      - name: Setup Java JDK
+        if: startsWith(inputs.name, 'Android')
+        uses: actions/setup-java@main
+        with:
+          distribution: 'zulu'
+          java-version: 18
+
+      - name: Setup Android SDK
+        if: startsWith(inputs.name, 'Android')
+        uses: android-actions/setup-android@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+
+      - name: Setup XCode
+        if: inputs.name == 'iOS'
+        uses: maxim-lobanov/setup-xcode@master
+        with:
+          xcode-version: '16.4'
+
+      - name: Install Libraries
+        run: |
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+
+      - name: Activate Lime 8.3.2
+        if: inputs.name == 'iOS'
+        run: |
+          haxelib set lime 8.3.2
+          haxelib list
+          haxelib run lime --version
+
+      - name: Configure Android
+        if: startsWith(inputs.name, 'Android')
+        run: | # "$ANDROID_NDK_LATEST_HOME", "$JAVA_HOME_17_arm64"
+          haxelib run lime config ANDROID_SDK "$ANDROID_HOME"
+          haxelib run lime config ANDROID_NDK_ROOT "$ANDROID_NDK_HOME"
+          haxelib run lime config JAVA_HOME "$JAVA_HOME"
+          haxelib run lime config ANDROID_SETUP true
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+      - name: Select Android ABI
+        if: startsWith(inputs.name, 'Android')
+        env:
+          BUILD_NAME: ${{ inputs.name }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          project = Path("Project.xml")
+          content = project.read_text(encoding="utf-8")
+          marker = '<android target-sdk-version="29" if="android"/>'
+
+          if os.environ["BUILD_NAME"] == "Android x64":
+              architecture = "arm64"
+              excluded = "armv7"
+          elif os.environ["BUILD_NAME"] == "Android x32":
+              architecture = "armv7"
+              excluded = "arm64"
+          else:
+              raise SystemExit(f"Unexpected Android build name: {os.environ['BUILD_NAME']}")
+
+          if '<architecture name=' in content:
+              raise SystemExit("Project.xml already contains an architecture rule; refusing to add a duplicate.")
+
+          rule = f'\t<architecture name="{architecture}" exclude="{excluded}" if="android" />'
+          if marker not in content:
+              raise SystemExit("Could not find Android target SDK marker in Project.xml.")
+
+          project.write_text(content.replace(marker, rule + "\n" + marker, 1), encoding="utf-8")
+          print(f"Configured Android ABI: {architecture}; excluded: {excluded}")
+          PY
+
+      - name: Compile
+        run: haxelib run lime build ${{ inputs.buildArgs }}
+
+      - name: Make IPA
+        if: inputs.name == 'iOS'
+        run: |
+          cd export/release/ios/build/Release-iphoneos
+          mkdir Payload
+          mv *.app Payload
+          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ inputs.artifactName }}
+          path: ${{ inputs.artifactPath }}
+          if-no-files-found: error

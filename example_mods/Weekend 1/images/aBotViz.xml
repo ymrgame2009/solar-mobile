@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="aBotViz.png" width="1036" height="323" spritePadding="3" borderPadding="1">
+	<SubTexture name="viz160000" x="318" y="1" width="68" height="196" frameX="0" frameY="0" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz150000" x="775" y="1" width="68" height="169" frameX="0" frameY="-27" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz140000" x="646" y="182" width="65" height="135" frameX="-3" frameY="-61" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz130000" x="66" y="211" width="60" height="95" frameX="-8" frameY="-101" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz120000" x="318" y="200" width="53" height="53" frameX="-15" frameY="-143" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz110000" x="584" y="295" width="46" height="27" frameX="-22" frameY="-169" frameWidth="68" frameHeight="196"/>
+	<SubTexture name="viz260000" x="257" y="1" width="58" height="209" frameX="0" frameY="0" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz250000" x="714" y="1" width="58" height="183" frameX="0" frameY="-26" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz240000" x="974" y="1" width="57" height="141" frameX="-1" frameY="-68" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz230000" x="129" y="220" width="54" height="99" frameX="-4" frameY="-110" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz220000" x="398" y="260" width="48" height="56" frameX="-10" frameY="-153" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz210000" x="241" y="220" width="43" height="27" frameX="-15" frameY="-182" frameWidth="58" frameHeight="209"/>
+	<SubTexture name="viz360000" x="136" y="1" width="58" height="215" frameX="0" frameY="0" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz350000" x="585" y="1" width="58" height="187" frameX="0" frameY="-28" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz340000" x="908" y="168" width="58" height="151" frameX="0" frameY="-64" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz330000" x="526" y="194" width="55" height="100" frameX="-3" frameY="-115" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz320000" x="294" y="260" width="50" height="57" frameX="-8" frameY="-158" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz310000" x="969" y="299" width="45" height="22" frameX="-13" frameY="-193" frameWidth="58" frameHeight="215"/>
+	<SubTexture name="viz460000" x="197" y="1" width="57" height="216" frameX="0" frameY="0" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz450000" x="526" y="1" width="56" height="190" frameX="0" frameY="-26" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz440000" x="917" y="1" width="54" height="153" frameX="0" frameY="-63" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz430000" x="186" y="220" width="52" height="101" frameX="0" frameY="-115" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz420000" x="347" y="260" width="48" height="57" frameX="-1" frameY="-159" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz410000" x="498" y="297" width="43" height="22" frameX="-3" frameY="-194" frameWidth="57" frameHeight="216"/>
+	<SubTexture name="viz660000" x="66" y="1" width="67" height="207" frameX="0" frameY="0" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz650000" x="646" y="1" width="65" height="178" frameX="0" frameY="-29" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz640000" x="775" y="173" width="62" height="143" frameX="0" frameY="-64" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz630000" x="585" y="191" width="57" height="101" frameX="0" frameY="-106" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz620000" x="389" y="197" width="51" height="60" frameX="0" frameY="-147" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz610000" x="1" y="285" width="45" height="30" frameX="0" frameY="-177" frameWidth="67" frameHeight="207"/>
+	<SubTexture name="viz760000" x="389" y="1" width="70" height="193" frameX="0" frameY="0" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz750000" x="846" y="1" width="68" height="164" frameX="0" frameY="-29" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz740000" x="969" y="157" width="66" height="139" frameX="0" frameY="-54" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz730000" x="462" y="189" width="61" height="103" frameX="0" frameY="-90" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz720000" x="1" y="219" width="53" height="63" frameX="0" frameY="-130" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz710000" x="714" y="289" width="46" height="32" frameX="0" frameY="-161" frameWidth="71" frameHeight="193"/>
+	<SubTexture name="viz560000" x="1" y="1" width="62" height="215" frameX="0" frameY="0" frameWidth="62" frameHeight="215"/>
+	<SubTexture name="viz550000" x="462" y="1" width="61" height="185" frameX="0" frameY="-30" frameWidth="62" frameHeight="215"/>
+	<SubTexture name="viz540000" x="846" y="168" width="59" height="151" frameX="0" frameY="-64" frameWidth="62" frameHeight="215"/>
+	<SubTexture name="viz530000" x="714" y="187" width="55" height="99" frameX="0" frameY="-116" frameWidth="62" frameHeight="215"/>
+	<SubTexture name="viz520000" x="241" y="260" width="50" height="59" frameX="0" frameY="-156" frameWidth="62" frameHeight="215"/>
+	<SubTexture name="viz510000" x="449" y="295" width="46" height="27" frameX="0" frameY="-188" frameWidth="62" frameHeight="215"/>
+</TextureAtlas>

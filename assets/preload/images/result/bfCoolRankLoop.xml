@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="bfCoolRankLoop.png" width="1277" height="1038" spritePadding="3" borderPadding="1">
+	<SubTexture name="rankLoop0000" x="639" y="1" width="637" height="516" frameX="0" frameY="-2" frameWidth="638" frameHeight="518"/>
+	<SubTexture name="rankLoop0001" x="1" y="522" width="634" height="515" frameX="0" frameY="-3" frameWidth="638" frameHeight="518"/>
+	<SubTexture name="rankLoop0002" x="639" y="520" width="637" height="515" frameX="0" frameY="-3" frameWidth="638" frameHeight="518"/>
+	<SubTexture name="rankLoop0003" x="1" y="1" width="635" height="518" frameX="0" frameY="0" frameWidth="638" frameHeight="518"/>
+</TextureAtlas>

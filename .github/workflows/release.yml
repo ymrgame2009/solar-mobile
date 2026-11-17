@@ -1,0 +1,86 @@
+name: Release
+on: workflow_dispatch
+
+permissions:
+  contents: write
+  discussions: write
+
+env:
+  PROJECT_NAME: SolarEngine
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android x64
+            os: ubuntu-22.04
+            buildArgs: "android -final -D android64 -clean"
+            artifactName: Android x64
+            expectedAbi: arm64-v8a
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: Android x32
+            os: ubuntu-22.04
+            buildArgs: "android -final -D android32 -clean"
+            artifactName: Android x32
+            expectedAbi: armeabi-v7a
+            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+          - name: iOS
+            os: macos-15
+            buildArgs: "ios -final -nosign"
+            artifactName: iOS
+            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+    uses: ./.github/workflows/build.yml
+    with:
+        name: ${{ matrix.name }}
+        os: ${{ matrix.os }}
+        buildArgs: ${{ matrix.buildArgs }}
+        artifactName: ${{ matrix.artifactName }}
+        artifactPath: ${{ matrix.artifactPath }}
+        expectedAbi: ${{ matrix.expectedAbi }}
+
+  Releaser:
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Download Android x64 Build
+        uses: actions/download-artifact@main
+        with:
+          name: Android x64
+          path: /home/runner
+
+      - name: Move Android x64 File
+        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/${{ env.PROJECT_NAME }}-Android-x64.apk
+
+      - name: Download Android x32 Build
+        uses: actions/download-artifact@main
+        with:
+          name: Android x32
+          path: /home/runner
+
+      - name: Move Android x32 File
+        run: mv /home/runner/${{ env.PROJECT_NAME }}-release.apk /home/runner/${{ env.PROJECT_NAME }}-Android-x32.apk
+
+      - name: Download iOS Build
+        uses: actions/download-artifact@main
+        with:
+          name: iOS
+          path: ${{ github.workspace }}
+
+      - name: Move iOS File
+        run: mv ${{ github.workspace }}/${{ env.PROJECT_NAME }}.ipa /home/runner/${{ env.PROJECT_NAME }}-iOS.ipa
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Publish The Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "0.6.1"
+          tag_name: "0.6.1"
+          last_release: false
+          files: |
+            /home/runner/*.apk
+            /home/runner/*.ipa

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="Menu_Pico.png" width="213" height="1567" spritePadding="3" borderPadding="1">
+	<SubTexture name="M Pico Idle0000" x="1" y="1349" width="205" height="217" frameX="0" frameY="-6" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0001" x="1" y="1349" width="205" height="217" frameX="0" frameY="-6" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0002" x="1" y="1126" width="208" height="220" frameX="0" frameY="-3" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0003" x="1" y="1126" width="208" height="220" frameX="0" frameY="-3" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0004" x="1" y="1" width="211" height="220" frameX="-1" frameY="-3" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0005" x="1" y="903" width="209" height="220" frameX="-3" frameY="-3" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0006" x="1" y="224" width="210" height="223" frameX="-3" frameY="-1" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0007" x="1" y="677" width="209" height="223" frameX="-4" frameY="-1" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0008" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0009" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0010" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0011" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0012" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+	<SubTexture name="M Pico Idle0013" x="1" y="450" width="209" height="224" frameX="-4" frameY="0" frameWidth="213" frameHeight="224"/>
+</TextureAtlas>

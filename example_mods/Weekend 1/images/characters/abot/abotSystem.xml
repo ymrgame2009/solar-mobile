@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Heroic Packer v0.1.0 https://heroicpacker.heroeyad.dev
+-->
+<TextureAtlas imagePath="abotSystem.png" width="816" height="1438" spritePadding="3" borderPadding="1">
+	<SubTexture name="Abot System0000" x="1" y="363" width="812" height="356" frameX="-2" frameY="-2" frameWidth="814" frameHeight="359"/>
+	<SubTexture name="Abot System0001" x="1" y="1" width="814" height="359" frameX="0" frameY="0" frameWidth="814" frameHeight="359"/>
+	<SubTexture name="Abot System0002" x="1" y="1" width="814" height="359" frameX="0" frameY="0" frameWidth="814" frameHeight="359"/>
+	<SubTexture name="Abot System0003" x="1" y="722" width="812" height="356" frameX="-2" frameY="-2" frameWidth="814" frameHeight="359"/>
+	<SubTexture name="Abot System0004" x="1" y="1081" width="812" height="356" frameX="-2" frameY="-2" frameWidth="814" frameHeight="359"/>
+</TextureAtlas>
