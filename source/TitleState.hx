@@ -143,7 +143,9 @@ class TitleState extends MusicBeatState
 		Highscore.load();
 
 		// IGNORE THIS!!!
-		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
+		var titleJsonStr:String = Paths.getTextFromFile('images/gfDanceTitle.json');
+		if (titleJsonStr == null || titleJsonStr.length < 1) titleJsonStr = '{"titlex":0,"titley":0,"startx":0,"starty":0,"gfx":0,"gfy":0,"backgroundSprite":"","bpm":102}';
+		titleJSON = Json.parse(titleJsonStr);
 		if (ClientPrefs.mmm == "DNB Old")
 			titleJSON = Json.parse(Paths.getTextFromFile('images/bpmchange/DNB.json'));
 		else if (ClientPrefs.mmm == "Stay Funky")
@@ -521,6 +523,7 @@ class TitleState extends MusicBeatState
 	function getIntroTextShit():Array<Array<String>>
 	{
 		var fullText:String = Assets.getText(Paths.txt('introText'));
+		if (fullText == null || fullText.length < 1) fullText = 'Solar Engine--Just Vibing';
 
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];
@@ -536,6 +539,7 @@ class TitleState extends MusicBeatState
 	function getUETextShit():Array<Array<String>>
 	{
 		var fullText:String = Assets.getText(Paths.txt('UEText'));
+		if (fullText == null || fullText.length < 1) fullText = 'UE--Text--Here';
 
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];
@@ -870,8 +874,15 @@ class TitleState extends MusicBeatState
 				{
 					case 1:
 						#if VIDEOS_ALLOWED
-						var video:MP4Handler = new MP4Handler();
-						video.play("assets/videos/AACIntroUE.mp4");
+						try
+						{
+							var video:MP4Handler = new MP4Handler();
+							video.play("assets/videos/AACIntroUE.mp4");
+						}
+						catch (e:Dynamic)
+						{
+							FlxG.log.warn('Video playback failed: ' + e);
+						}
 						#end
 
 						FlxG.sound.playMusic(Paths.music("freakyMenu-" + ClientPrefs.mmm), 0);
