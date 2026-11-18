@@ -2,6 +2,13 @@ package;
 
 import flixel.util.FlxSave;
 import lime.app.Application;
+#if mobile
+import mobile.CopyState;
+#end
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -11,24 +18,48 @@ class InitState extends FlxState
     public override function create() {
         super.create();
 
-        var oldSave:FlxSave = new FlxSave();
-        oldSave.bind("funkin", 'universe');
-
-		FlxG.save.bind('funkin', 'solar'); // get the save ready before starting the game.
-        if (!oldSave.isEmpty() && FlxG.save.data.wasTransferred == null) // Check if the save exists under the old folder.
+        try
         {
-            FlxG.save.mergeData(oldSave.data);
-            FlxG.save.data.wasTransferred = true; // make sure this can't be run again
-            FlxG.save.flush();
+            var oldSave:FlxSave = new FlxSave();
+            oldSave.bind("funkin", 'universe');
+
+            FlxG.save.bind('funkin', 'solar'); // get the save ready before starting the game.
+            if (!oldSave.isEmpty() && FlxG.save.data.wasTransferred == null) // Check if the save exists under the old folder.
+            {
+                FlxG.save.mergeData(oldSave.data);
+                FlxG.save.data.wasTransferred = true; // make sure this can't be run again
+                FlxG.save.flush();
+            }
+            FlxG.signals.postStateSwitch.add(validateTitle);
+
+            PlayerSettings.init();
+            ClientPrefs.loadPrefs(); // load the save for fixing potentially invalid options.
+
+            validateSettings();
         }
-        FlxG.signals.postStateSwitch.add(validateTitle);
+        catch (e:Dynamic)
+        {
+            // Log the error so it's not a silent crash
+            #if sys
+            try
+            {
+                if (!FileSystem.exists('logs'))
+                    FileSystem.createDirectory('logs');
+                File.saveContent('logs/InitState_crash_' + Date.now().toString().replace(' ', '_').replace(':', "'") + '.txt',
+                    'InitState crash:\n' + Std.string(e) + '\n\nStack:\n' + haxe.CallStack.toString(haxe.CallStack.exceptionStack(true)));
+            }
+            catch (e2:Dynamic) {}
+            #end
+            FlxG.log.warn('InitState error: ' + e);
+        }
 
-        PlayerSettings.init();
-		ClientPrefs.loadPrefs(); // load the save for fixing potentially invalid options.
-
-        validateSettings();
-
+        // On mobile, go to CopyState first (it copies files to storage, then goes to TitleState)
+        // On desktop, go directly to TitleState
+        #if mobile
+        FlxG.switchState(new CopyState());
+        #else
         FlxG.switchState(new TitleState());
+        #end
     }
 
     public static function validateTitle()
@@ -62,7 +93,7 @@ class InitState extends FlxState
         if (ClientPrefs.hudZoomOut) ClientPrefs.hudZoomOut = false;
         if (ClientPrefs.ib) ClientPrefs.ib = false;
         if (ClientPrefs.lhpbgb) ClientPrefs.lhpbgb = false;
-        
+
         var validHitsounds:Array<String> = [
 			'Classic',
 			'Water',
