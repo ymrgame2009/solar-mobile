@@ -1,13 +1,16 @@
 #if !macro
 import Paths;
-#if VIDEOS_ALLOWED 
-	#if (hxCodec <= "2.5.1") // hxcodec fix *yay sound effect*
-	import vlc.MP4Handler;
-	#elseif (hxCodec <= "2.6.1")
-	import hxcodec.VideoHandler as MP4Handler;
-	#else
-	import hxcodec.FlxVideo as MP4Handler;
-	#end
+#if VIDEOS_ALLOWED
+    #if (hxCodec <= "2.5.1")
+    import vlc.MP4Handler;
+    #elseif (hxCodec <= "2.6.1")
+    import hxcodec.VideoHandler as MP4Handler;
+    #elseif (hxCodec >= "3.0.0")
+    // hxCodec 3.0+ reorganized the package
+    import hxcodec.flixel.FlxVideo as MP4Handler;
+    #else
+    import hxcodec.FlxVideo as MP4Handler;
+    #end
 #end
 import flixel.FlxSprite;
 import flixel.text.FlxText;
