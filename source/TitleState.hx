@@ -871,7 +871,7 @@ class TitleState extends MusicBeatState
 					case 1:
 						#if VIDEOS_ALLOWED
 						var video:MP4Handler = new MP4Handler();
-						video.playVideo("assets/videos/AACIntroUE.mp4");
+						video.play("assets/videos/AACIntroUE.mp4");
 						#end
 
 						FlxG.sound.playMusic(Paths.music("freakyMenu-" + ClientPrefs.mmm), 0);

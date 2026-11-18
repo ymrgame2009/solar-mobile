@@ -1803,12 +1803,12 @@ class PlayState extends MusicBeatState
 		}
 
 		var video:MP4Handler = new MP4Handler();
-		video.playVideo(filepath);
-		video.finishCallback = function()
+		video.play(filepath);
+		video.onEndReached.add(function()
 		{
 			startAndEnd();
 			return;
-		}
+		});
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
