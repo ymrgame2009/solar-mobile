@@ -397,6 +397,35 @@ class Paths
 			localTrackedAssets.push(path);
 			return currentTrackedAssets.get(path);
 		}
+		// Fallback for 'mobile' library: try loading from default library at assets/mobile/images/<key>.png
+		if (library == 'mobile') {
+			var fallbackPath:String = 'assets/mobile/images/$key.png';
+			if (OpenFlAssets.exists(fallbackPath, IMAGE)) {
+				if(!currentTrackedAssets.exists(fallbackPath)) {
+					var newGraphic:FlxGraphic = FlxG.bitmap.add(fallbackPath, false, fallbackPath);
+					newGraphic.persist = true;
+					currentTrackedAssets.set(fallbackPath, newGraphic);
+				}
+				localTrackedAssets.push(fallbackPath);
+				return currentTrackedAssets.get(fallbackPath);
+			}
+			// Also try disk path (after CopyState copies files)
+			var diskPath:String = './' + fallbackPath;
+			if (FileSystem.exists(diskPath)) {
+				try {
+					if(!currentTrackedAssets.exists(diskPath)) {
+						var newBitmap:BitmapData = BitmapData.fromFile(diskPath);
+						var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, diskPath);
+						newGraphic.persist = true;
+						currentTrackedAssets.set(diskPath, newGraphic);
+					}
+					localTrackedAssets.push(diskPath);
+					return currentTrackedAssets.get(diskPath);
+				} catch(e:Dynamic) {
+					trace('Failed to load mobile graphic from disk: ' + e);
+				}
+			}
+		}
 		trace('oh no its returning null NOOOO');
 		return null;
 	}
