@@ -191,12 +191,22 @@ class TitleState extends MusicBeatState
 		}
 
 		FlxG.mouse.visible = false;
+		#if mobile
+		// Skip FlashingState on mobile - it can show a black screen if touch pad doesn't load
+		FlashingState.leftState = true;
+		if (FlxG.save.data.flashing == null)
+		{
+			FlxG.save.data.flashing = false;
+			FlxG.save.flush();
+		}
+		#else
 		if (FlxG.save.data.flashing == null && !FlashingState.leftState)
 		{
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
 		}
+		#end
 		#if PROMPT_LAUNCHER // currently archived.
 		else if (FlxG.save.data.officialLauncher == null && !OfficialLauncherState.leftState) //Thing Remove popup officlal launcher
 		{
