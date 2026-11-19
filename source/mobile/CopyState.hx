@@ -70,6 +70,7 @@ class CopyState extends MusicBeatState
 		checkExistingFiles();
 		if (maxLoopTimes <= 0)
 		{
+			MobileData.init();
 			MusicBeatState.switchState(new TitleState());
 			return;
 		}
@@ -127,17 +128,20 @@ class CopyState extends MusicBeatState
 					{
 						FlxG.sound.play(snd).onComplete = () ->
 						{
+							MobileData.init();
 							MusicBeatState.switchState(new TitleState());
 						};
 					}
 					else
 					{
+						MobileData.init();
 						MusicBeatState.switchState(new TitleState());
 					}
 				}
 				catch (e:Dynamic)
 				{
 					trace('CopyState: sound failed, transitioning anyway: ' + e);
+					MobileData.init();
 					MusicBeatState.switchState(new TitleState());
 				}
 			}
