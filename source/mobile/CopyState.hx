@@ -70,7 +70,7 @@ class CopyState extends MusicBeatState
 		checkExistingFiles();
 		if (maxLoopTimes <= 0)
 		{
-			MusicBeatState.switchState(new InitState());
+			MusicBeatState.switchState(new TitleState());
 			return;
 		}
 
@@ -120,10 +120,26 @@ class CopyState extends MusicBeatState
 					File.saveContent('logs/' + Date.now().toString().replace(' ', '-').replace(':', "'") + '-CopyState' + '.txt', failedFilesStack.join('\n'));
 				}
 				canUpdate = false;
-				FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () ->
+				try
 				{
-					MusicBeatState.switchState(new InitState());
-				};
+					var snd = Paths.sound('confirmMenu');
+					if (snd != null)
+					{
+						FlxG.sound.play(snd).onComplete = () ->
+						{
+							MusicBeatState.switchState(new TitleState());
+						};
+					}
+					else
+					{
+						MusicBeatState.switchState(new TitleState());
+					}
+				}
+				catch (e:Dynamic)
+				{
+					trace('CopyState: sound failed, transitioning anyway: ' + e);
+					MusicBeatState.switchState(new TitleState());
+				}
 			}
 
 			if (loopTimes == maxLoopTimes)

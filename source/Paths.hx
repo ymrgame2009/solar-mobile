@@ -407,7 +407,12 @@ class Paths
 		var file:String = modsSounds(path, key);
 		if(FileSystem.exists(file)) {
 			if(!currentTrackedSounds.exists(file)) {
-				currentTrackedSounds.set(file, Sound.fromFile(file));
+				try {
+					currentTrackedSounds.set(file, Sound.fromFile(file));
+				} catch(e:Dynamic) {
+					trace('Failed to load mod sound: ' + e);
+					return null;
+				}
 			}
 			localTrackedAssets.push(key);
 			return currentTrackedSounds.get(file);
@@ -423,21 +428,38 @@ class Paths
 			// Mods are loose files, but bundled game assets are stored in OpenFL's
 			// asset library (not necessarily as files in the app's working directory).
 			var diskPath:String = './' + gottenPath;
+			var soundLoaded:Bool = false;
 			if (FileSystem.exists(diskPath))
 			{
-				currentTrackedSounds.set(gottenPath, Sound.fromFile(diskPath));
+				try
+				{
+					currentTrackedSounds.set(gottenPath, Sound.fromFile(diskPath));
+					soundLoaded = true;
+				}
+				catch (e:Dynamic)
+				{
+					trace('Failed to load sound from disk, trying OpenFL assets: ' + e);
+				}
 			}
-			else
+			if (!soundLoaded)
 			{
 				var assetKey:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
 				if (path == 'songs')
 					assetKey = 'songs:' + assetKey;
 
-				if (OpenFlAssets.exists(assetKey, SOUND))
-					currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(assetKey));
-				else
+				try
 				{
-					trace('Sound asset not found: ' + assetKey);
+					if (OpenFlAssets.exists(assetKey, SOUND))
+						currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(assetKey));
+					else
+					{
+						trace('Sound asset not found: ' + assetKey);
+						return null;
+					}
+				}
+				catch (e2:Dynamic)
+				{
+					trace('Failed to load sound from OpenFL: ' + e2);
 					return null;
 				}
 			}
