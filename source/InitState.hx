@@ -58,6 +58,8 @@ class InitState extends FlxState
         #if mobile
         FlxG.switchState(new CopyState());
         #else
+        // On desktop, init MobileData then go to TitleState
+        try { mobile.MobileData.init(); } catch(e:Dynamic) { FlxG.log.warn('MobileData init failed: ' + e); }
         FlxG.switchState(new TitleState());
         #end
     }
