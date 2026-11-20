@@ -973,6 +973,9 @@ class PlayState extends MusicBeatState
 
                 // "GLOBAL" SCRIPTS
                 #if LUA_ALLOWED
+                logProgress('before global scripts');
+                try
+                {
                 var filesPushed:Array<String> = [];
                 var foldersToCheck:Array<String> = [Paths.getPreloadPath('scripts/')];
 
@@ -993,16 +996,28 @@ class PlayState extends MusicBeatState
                                 {
                                         if (file.endsWith('.lua') && !filesPushed.contains(file))
                                         {
-                                                luaArray.push(new FunkinLua(folder + file));
-                                                filesPushed.push(file);
+                                                try {
+                                                        luaArray.push(new FunkinLua(folder + file));
+                                                        filesPushed.push(file);
+                                                } catch(e:Dynamic) {
+                                                        logProgress('Failed to load global lua: ' + file + ' - ' + e);
+                                                }
                                         }
                                 }
                         }
+                }
+                }
+                catch (e:Dynamic)
+                {
+                        logProgress('Global scripts loading CRASH: ' + e);
                 }
                 #end
 
                 // STAGE SCRIPTS
                 #if (MODS_ALLOWED && LUA_ALLOWED)
+                logProgress('before stage scripts');
+                try
+                {
                 var doPush:Bool = false;
                 var luaFile:String = 'stages/' + curStage + '.lua';
                 if (FileSystem.exists(Paths.modFolders(luaFile)))
@@ -1020,7 +1035,18 @@ class PlayState extends MusicBeatState
                 }
 
                 if (doPush)
-                        luaArray.push(new FunkinLua(luaFile));
+                {
+                        try {
+                                luaArray.push(new FunkinLua(luaFile));
+                        } catch(e:Dynamic) {
+                                logProgress('Failed to load stage lua: ' + luaFile + ' - ' + e);
+                        }
+                }
+                }
+                catch (e:Dynamic)
+                {
+                        logProgress('Stage scripts loading CRASH: ' + e);
+                }
                 #end
 
                 var gfVersion:String = SONG.gfVersion;
