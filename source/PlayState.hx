@@ -2617,9 +2617,22 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
-		FlxG.sound.music.pitch = playbackRate;
-		FlxG.sound.music.onComplete = finishSong.bind();
+		try
+		{
+			var instSound = Paths.inst(PlayState.SONG.song);
+			if (instSound != null)
+			{
+				FlxG.sound.playMusic(instSound, 1, false);
+				FlxG.sound.music.pitch = playbackRate;
+				FlxG.sound.music.onComplete = finishSong.bind();
+			}
+			else
+				FlxG.log.warn('Inst sound not found, song will have no music');
+		}
+		catch (e:Dynamic)
+		{
+			FlxG.log.warn('Failed to play inst music: ' + e);
+		}
 		vocals.play();
 
 		if (startOnTime > 0)
@@ -2700,7 +2713,18 @@ class PlayState extends MusicBeatState
 
 		vocals.pitch = playbackRate;
 		FlxG.sound.list.add(vocals);
-		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song)));
+		try
+		{
+			var instSound = Paths.inst(PlayState.SONG.song);
+			if (instSound != null)
+				FlxG.sound.list.add(new FlxSound().loadEmbedded(instSound));
+			else
+				FlxG.log.warn('Inst sound not found for: ' + PlayState.SONG.song);
+		}
+		catch (e:Dynamic)
+		{
+			FlxG.log.warn('Failed to load inst: ' + e);
+		}
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
