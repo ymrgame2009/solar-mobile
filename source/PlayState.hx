@@ -2,7 +2,7 @@ package;
 
 import objects.uehud.IconBop;
 import flixel.graphics.FlxGraphic;
-#if desktop
+#if DISCORD_ALLOWED
 import Discord.DiscordClient;
 #end
 import Section.SwagSection;
@@ -370,9 +370,26 @@ class PlayState extends MusicBeatState
 	public var luaTouchPad:TouchPad;
 	#end
 
+	// Debug logging for finding crashes on mobile
+	public static function logProgress(msg:String)
+	{
+		#if sys
+		try
+		{
+			if (!sys.FileSystem.exists('logs'))
+				sys.FileSystem.createDirectory('logs');
+			sys.io.File.appendContent('logs/playstate.log', Date.now().toString() + ': ' + msg + '\n');
+		}
+		catch (e:Dynamic) {}
+		#end
+	}
+
 	override public function create()
 	{
-		if (ClientPrefs.ib)
+		logProgress('=== PlayState create START ===');
+		try
+		{
+			if (ClientPrefs.ib)
 		{
 			iconBop = new IconBop(0,0,this);
 			add(iconBop);
@@ -380,6 +397,7 @@ class PlayState extends MusicBeatState
 		// trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+			logProgress('after clearMemory');
 
 		// for lua
 		instance = this;
@@ -512,6 +530,7 @@ class PlayState extends MusicBeatState
 		SONG.stage = curStage;
 
 		var stageData:StageFile = StageData.getStageFile(curStage);
+		logProgress('after stageData: curStage=' + curStage);
 		if (stageData == null)
 		{ // Stage couldn't be found, create a dummy stage for preventing a crash
 			stageData = {
@@ -1182,11 +1201,13 @@ class PlayState extends MusicBeatState
 		
 		#if mobile
 		addMobileControls();
+		logProgress('after addMobileControls 1');
 		mobileControls.onButtonDown.add(onButtonPress);
 		mobileControls.onButtonUp.add(onButtonRelease);
 		#end
 
 		generateSong(SONG.song);
+		logProgress('after generateSong');
 
 		// After all characters being loaded, it makes then invisible 0.01s later so that the player won't freeze when you change characters
 		// add(strumLine);
@@ -1503,6 +1524,7 @@ class PlayState extends MusicBeatState
 		callOnLuas('onCreatePost', []);
 
 		super.create();
+		logProgress('after super.create');
 
 		cacheCountdown();
 		cachePopUpScore();
@@ -1528,6 +1550,15 @@ class PlayState extends MusicBeatState
 		addVirtualPad(NONE, P);
 		#end
 		#end
+		logProgress('=== PlayState create END ===');
+		}
+		catch (e:Dynamic)
+		{
+			logProgress('!!! CRASH in create(): ' + Std.string(e));
+			trace('PlayState create CRASH: ' + e);
+			// Return to freeplay instead of crashing
+			try { FlxG.switchState(new FreeplayState()); } catch(e2:Dynamic) {}
+		}
 	}
 
 	public function changeTheSettingsBitch()
