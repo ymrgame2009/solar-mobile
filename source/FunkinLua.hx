@@ -89,12 +89,6 @@ class FunkinLua
 
 	public function new(script:String)
 	{
-		// Skip Lua entirely on mobile - linc_luajit causes native crashes on Android
-		#if mobile
-		scriptName = script;
-		closed = true;
-		return;
-		#end
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
