@@ -439,12 +439,35 @@ class FreeplayState extends MusicBeatState
 				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 				PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 				if (PlayState.SONG.needsVoices)
-					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+				{
+					try
+					{
+						var voicesSound = Paths.voices(PlayState.SONG.song);
+						if (voicesSound != null)
+							vocals = new FlxSound().loadEmbedded(voicesSound);
+						else
+							vocals = new FlxSound();
+					}
+					catch (e:Dynamic)
+					{
+						trace('Failed to load voices: ' + e);
+						vocals = new FlxSound();
+					}
+				}
 				else
 					vocals = new FlxSound();
 
 				FlxG.sound.list.add(vocals);
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
+				try
+				{
+					var instSound = Paths.inst(PlayState.SONG.song);
+					if (instSound != null)
+						FlxG.sound.playMusic(instSound, 0.7);
+				}
+				catch (e:Dynamic)
+				{
+					trace('Failed to load inst: ' + e);
+				}
 				vocals.play();
 				vocals.persist = true;
 				vocals.looped = true;
@@ -511,12 +534,35 @@ class FreeplayState extends MusicBeatState
 				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 				PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 				if (PlayState.SONG.needsVoices)
-					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+				{
+					try
+					{
+						var voicesSound = Paths.voices(PlayState.SONG.song);
+						if (voicesSound != null)
+							vocals = new FlxSound().loadEmbedded(voicesSound);
+						else
+							vocals = new FlxSound();
+					}
+					catch (e:Dynamic)
+					{
+						trace('Failed to load voices: ' + e);
+						vocals = new FlxSound();
+					}
+				}
 				else
 					vocals = new FlxSound();
 
 				FlxG.sound.list.add(vocals);
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
+				try
+				{
+					var instSound = Paths.inst(PlayState.SONG.song);
+					if (instSound != null)
+						FlxG.sound.playMusic(instSound, 0.7);
+				}
+				catch (e:Dynamic)
+				{
+					trace('Failed to load inst: ' + e);
+				}
 				vocals.play();
 				vocals.persist = true;
 				vocals.looped = true;
