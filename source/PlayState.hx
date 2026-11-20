@@ -592,6 +592,7 @@ class PlayState extends MusicBeatState
                 dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
                 gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
+                logProgress('before stage switch');
                 switch (curStage)
                 {
                         case 'stage': // Week 1
@@ -946,6 +947,7 @@ class PlayState extends MusicBeatState
                         introSoundsSuffix = '-pixel';
                 }
 
+                logProgress('before add groups');
                 add(gfGroup); // Needed for blammed lights
 
                 // Shitty layering but whatev it works LOL
@@ -1048,6 +1050,7 @@ class PlayState extends MusicBeatState
 
                 if (!stageData.hide_girlfriend)
                 {
+                        logProgress('before gf Character');
                         gf = new Character(0, 0, gfVersion);
                         startCharacterPos(gf);
                         gf.scrollFactor.set(0.95, 0.95);
@@ -1077,16 +1080,19 @@ class PlayState extends MusicBeatState
                         }
                 }
 
+                logProgress('after gf, before dad');
                 dad = new Character(0, 0, SONG.player2);
                 startCharacterPos(dad, true);
                 dadGroup.add(dad);
                 startCharacterLua(dad.curCharacter);
 
+                logProgress('after dad, before boyfriend');
                 boyfriend = new Boyfriend(0, 0, SONG.player1);
                 startCharacterPos(boyfriend);
                 boyfriendGroup.add(boyfriend);
                 startCharacterLua(boyfriend.curCharacter);
 
+                logProgress('after boyfriend creation');
                 var camPos:FlxPoint = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
                 if (gf != null)
                 {
@@ -1176,6 +1182,7 @@ class PlayState extends MusicBeatState
                 add(timeTxt);
                 timeBarBG.sprTracker = timeBar;
 
+                logProgress('before strumLineNotes');
                 strumLineNotes = new FlxTypedGroup<StrumNote>();
                 add(strumLineNotes);
                 //add(grpNoteSplashes);
@@ -1250,6 +1257,7 @@ class PlayState extends MusicBeatState
                 FlxG.fixedTimestep = false;
                 moveCameraSection();
 
+                logProgress('before healthBar');
                 healthBarBG = new AttachedSprite('healthBar');
                 healthBarBG.y = FlxG.height * 0.89;
                 healthBarBG.screenCenter(X);
