@@ -90,9 +90,11 @@ class FunkinLua
         public function new(script:String)
         {
                 #if LUA_ALLOWED
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] A: start: $script', 0x00FFFF);
                 lua = LuaL.newstate();
                 LuaL.openlibs(lua);
                 Lua.init_callbacks(lua);
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] B: after init_callbacks', 0x00FFFF);
 
                 // trace('Lua version: ' + Lua.version());
                 // trace("LuaJIT version: " + Lua.versionJIT());
@@ -117,10 +119,13 @@ class FunkinLua
                 catch (e:Dynamic)
                 {
                         trace(e);
+                        if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] EXCEPTION in dofile: ' + e, 0xFF0000);
                         return;
                 }
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] C: after dofile OK', 0x00FFFF);
                 scriptName = script;
                 initHaxeModule();
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] D: after initHaxeModule', 0x00FFFF);
 
                 // unlowercased starting words make me mad!!
                 trace('Lua file loaded succesfully:' + script);
@@ -274,6 +279,8 @@ class FunkinLua
                 // ewwww cringe simplified names!!!
                 // VIDEOBOT WHY WOULD YOU EVEN SIMPLIFY THESE DAMN NAMES
                 // THEYRE HARD TO FUCKING READ
+
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] E: after set() calls', 0x00FFFF);
 
                 //build target, even tho windows will be the main one, until someone ports ue to linux, mac, html5 (possibly not please) or android
                 #if windows
@@ -3390,6 +3397,8 @@ class FunkinLua
                         return list;
                 });
 
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] F: before mobile section', 0x00FFFF);
+
                 #if mobile
                 Lua_helper.add_callback(lua, 'mobileC', () -> Controls.instance.mobileC);
 
@@ -3746,7 +3755,10 @@ class FunkinLua
                 #end
                 #end
 
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] G: before onCreate', 0x00FFFF);
+
                 call('onCreate', []);
+                if (PlayState.instance != null) PlayState.instance.addTextToDebug('[LUA-DBG] H: DONE', 0x00FF00);
                 #end
         }
 
