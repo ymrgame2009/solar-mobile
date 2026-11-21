@@ -3391,7 +3391,7 @@ class FunkinLua
                 });
 
                 #if mobile
-                Lua_helper.add_callback(lua, 'mobileC', Controls.instance.mobileC);
+                Lua_helper.add_callback(lua, 'mobileC', () -> Controls.instance.mobileC);
 
                 Lua_helper.add_callback(lua, 'mobileControlsMode', () -> {
                         switch (mobile.MobileData.mode)
@@ -3545,10 +3545,10 @@ class FunkinLua
                         return PlayState.instance.luaTouchPadReleased(button);
                 });
 
-                Lua_helper.add_callback(lua, "touchJustPressed", TouchUtil.justPressed);
-                Lua_helper.add_callback(lua, "touchPressed", TouchUtil.pressed);
-                Lua_helper.add_callback(lua, "touchJustReleased", TouchUtil.justReleased);
-                Lua_helper.add_callback(lua, "touchReleased", TouchUtil.released);
+                Lua_helper.add_callback(lua, "touchJustPressed", () -> TouchUtil.justPressed);
+                Lua_helper.add_callback(lua, "touchPressed", () -> TouchUtil.pressed);
+                Lua_helper.add_callback(lua, "touchJustReleased", () -> TouchUtil.justReleased);
+                Lua_helper.add_callback(lua, "touchReleased", () -> TouchUtil.released);
                 Lua_helper.add_callback(lua, "touchPressedObject", function(object:String, ?camera:String):Bool
                 {
                         var obj = PlayState.instance.getLuaObject(object);
@@ -3673,20 +3673,20 @@ class FunkinLua
                 //static var spicyPillow:AndroidBatteryManager = new AndroidBatteryManager();
 
                 //Lua_helper.add_callback(lua, "isRooted", AndroidTools.isRooted());
-                Lua_helper.add_callback(lua, "isDolbyAtmos", AndroidTools.isDolbyAtmos());
-                Lua_helper.add_callback(lua, "isAndroidTV", AndroidTools.isAndroidTV());
-                Lua_helper.add_callback(lua, "isTablet", AndroidTools.isTablet());
-                Lua_helper.add_callback(lua, "isChromebook", AndroidTools.isChromebook());
-                Lua_helper.add_callback(lua, "isDeXMode", AndroidTools.isDeXMode());
+                Lua_helper.add_callback(lua, "isDolbyAtmos", () -> AndroidTools.isDolbyAtmos());
+                Lua_helper.add_callback(lua, "isAndroidTV", () -> AndroidTools.isAndroidTV());
+                Lua_helper.add_callback(lua, "isTablet", () -> AndroidTools.isTablet());
+                Lua_helper.add_callback(lua, "isChromebook", () -> AndroidTools.isChromebook());
+                Lua_helper.add_callback(lua, "isDeXMode", () -> AndroidTools.isDeXMode());
                 //Lua_helper.add_callback(lua, "isCharging", spicyPillow.isCharging());
 
-                Lua_helper.add_callback(lua, "backJustPressed", FlxG.android.justPressed.BACK);
-                Lua_helper.add_callback(lua, "backPressed", FlxG.android.pressed.BACK);
-                Lua_helper.add_callback(lua, "backJustReleased", FlxG.android.justReleased.BACK);
+                Lua_helper.add_callback(lua, "backJustPressed", () -> FlxG.android.justPressed.BACK);
+                Lua_helper.add_callback(lua, "backPressed", () -> FlxG.android.pressed.BACK);
+                Lua_helper.add_callback(lua, "backJustReleased", () -> FlxG.android.justReleased.BACK);
 
-                Lua_helper.add_callback(lua, "menuJustPressed", FlxG.android.justPressed.MENU);
-                Lua_helper.add_callback(lua, "menuPressed", FlxG.android.pressed.MENU);
-                Lua_helper.add_callback(lua, "menuJustReleased", FlxG.android.justReleased.MENU);
+                Lua_helper.add_callback(lua, "menuJustPressed", () -> FlxG.android.justPressed.MENU);
+                Lua_helper.add_callback(lua, "menuPressed", () -> FlxG.android.pressed.MENU);
+                Lua_helper.add_callback(lua, "menuJustReleased", () -> FlxG.android.justReleased.MENU);
 
                 Lua_helper.add_callback(lua, "getCurrentOrientation", () -> PsychJNI.getCurrentOrientationAsString());
                 Lua_helper.add_callback(lua, "setOrientation", function(hint:Null<String>):Void
