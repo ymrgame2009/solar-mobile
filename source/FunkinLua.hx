@@ -87,6 +87,16 @@ class FunkinLua
 
         public static var ir = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('is'));
 
+        #if sys
+        static function dbgAppend(path:String, content:String) {
+            try {
+                var f = sys.io.File.append(path, false);
+                f.writeString(content);
+                f.close();
+            } catch(e:Dynamic) {}
+        }
+        #end
+
         public function new(script:String)
         {
                 #if LUA_ALLOWED
@@ -97,47 +107,47 @@ class FunkinLua
                 #end
 
                 // Phase 1: Lua state + init
-                #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'A: before newstate\n'); } catch(e:Dynamic) {} #end
+                #if sys if (logPath != null) try { dbgAppend(logPath, 'A: before newstate\n'); } catch(e:Dynamic) {} #end
                 try {
                         lua = LuaL.newstate();
                         LuaL.openlibs(lua);
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'B: after newstate+openlibs\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B: after newstate+openlibs\n'); } catch(e:Dynamic) {} #end
                         Lua.init_callbacks(lua);
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'C: after init_callbacks\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'C: after init_callbacks\n'); } catch(e:Dynamic) {} #end
                 } catch(e:Dynamic) {
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'FAIL P1: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL P1: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         return;
                 }
 
                 // Phase 2: dofile
-                #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'D: before dofile\n'); } catch(e:Dynamic) {} #end
+                #if sys if (logPath != null) try { dbgAppend(logPath, 'D: before dofile\n'); } catch(e:Dynamic) {} #end
                 try {
                         var result:Dynamic = LuaL.dofile(lua, script);
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'E: after dofile result=' + result + '\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'E: after dofile result=' + result + '\n'); } catch(e:Dynamic) {} #end
                         var resultStr:String = Lua.tostring(lua, result);
                         if (resultStr != null && result != 0) {
-                                #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'ERROR dofile: ' + resultStr + '\n'); } catch(e:Dynamic) {} #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'ERROR dofile: ' + resultStr + '\n'); } catch(e:Dynamic) {} #end
                                 lua = null;
                                 return;
                         }
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'F: dofile OK\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'F: dofile OK\n'); } catch(e:Dynamic) {} #end
                 } catch(e:Dynamic) {
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'FAIL P2 dofile: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL P2 dofile: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         return;
                 }
 
                 scriptName = script;
 
                 // Phase 3: call onCreate
-                #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'G: before call onCreate\n'); } catch(e:Dynamic) {} #end
+                #if sys if (logPath != null) try { dbgAppend(logPath, 'G: before call onCreate\n'); } catch(e:Dynamic) {} #end
                 try {
                         call('onCreate', []);
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'H: after call onCreate\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'H: after call onCreate\n'); } catch(e:Dynamic) {} #end
                 } catch(e:Dynamic) {
-                        #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, 'FAIL P3 onCreate: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL P3 onCreate: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                 }
 
-                #if sys if (logPath != null) try { sys.io.File.appendContent(logPath, '=== DONE ===\n'); } catch(e:Dynamic) {} #end
+                #if sys if (logPath != null) try { dbgAppend(logPath, '=== DONE ===\n'); } catch(e:Dynamic) {} #end
                 #end
         }
 
