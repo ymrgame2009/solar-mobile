@@ -48,8 +48,10 @@
 		},
 		{
     		"name": "linc_luajit",
-    		"type": "haxelib",
-   			"version": "0.0.6"
+   			"type": "git",
+    		"dir": null,
+    		"ref": "master",
+    		"url": "https://github.com/superpowers04/linc_luajit"
 		},
 		{
 			"name": "openfl",
