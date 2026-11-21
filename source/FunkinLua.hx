@@ -650,7 +650,6 @@ class FunkinLua
                                 if (funcName == null)
                                 {
                                         trace("bad argument #1 to 'callOnLuas' (string expected, got nil)");
-                                        #end
                                         return;
                                 }
                                 if (args == null)
@@ -672,13 +671,11 @@ class FunkinLua
                         if (luaFile == null)
                         {
                                 trace("bad argument #1 to 'callScript' (string expected, got nil)");
-                                #end
                                 return;
                         }
                         if (funcName == null)
                         {
                                 trace("bad argument #2 to 'callScript' (string expected, got nil)");
-                                #end
                                 return;
                         }
                         if (args == null)
@@ -734,13 +731,11 @@ class FunkinLua
                         if (luaFile == null)
                         {
                                 trace("bad argument #1 to 'getGlobalFromScript' (string expected, got nil)");
-                                #end
                                 return;
                         }
                         if (global == null)
                         {
                                 trace("bad argument #2 to 'getGlobalFromScript' (string expected, got nil)");
-                                #end
                                 return;
                         }
                         var cervix = luaFile + ".lua";
