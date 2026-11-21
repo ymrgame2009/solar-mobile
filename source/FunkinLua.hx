@@ -784,7 +784,7 @@ class FunkinLua
                                                 }
                                                 else if (Lua.isboolean(luaInstance.lua, -1))
                                                 {
-                                                        Lua.pushboolean(lua, Lua.toboolean(luaInstance.lua, -1) == 1);
+                                                        Lua.pushboolean(lua, cast Lua.toboolean(luaInstance.lua, -1));
                                                 }
                                                 else
                                                 {
@@ -895,7 +895,7 @@ class FunkinLua
                                                                 Lua.pushstring(lua, Lua.tostring(luaInstance.lua, -2));
                                                                 pop++;
                                                         }else if(Lua.isboolean(luaInstance.lua,-2)){
-                                                                Lua.pushboolean(lua, Lua.toboolean(luaInstance.lua, -2) == 1);
+                                                                Lua.pushboolean(lua, cast Lua.toboolean(luaInstance.lua, -2));
                                                                 pop++;
                                                         }
                                                         // TODO: table
@@ -909,7 +909,7 @@ class FunkinLua
                                                                 Lua.pushstring(lua, Lua.tostring(luaInstance.lua, -1));
                                                                 pop++;
                                                         }else if(Lua.isboolean(luaInstance.lua,-1)){
-                                                                Lua.pushboolean(lua, Lua.toboolean(luaInstance.lua, -1) == 1);
+                                                                Lua.pushboolean(lua, cast Lua.toboolean(luaInstance.lua, -1));
                                                                 pop++;
                                                         }
                                                         // TODO: table
