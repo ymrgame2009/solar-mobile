@@ -59,13 +59,6 @@
             "name": "openfl",
             "type": "haxelib",
             "version": "9.5.1"
-        },
-        {
-            "name": "extension-androidtools",
-            "type": "git",
-            "dir": null,
-            "ref": "main",
-            "url": "https://github.com/AlafandyPorting/extension-androidtools-legacy"
         }
     ]
 }
