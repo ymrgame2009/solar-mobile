@@ -70,6 +70,12 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
 
+      - name: List Installed Haxelibs
+        run: haxelib list
+
+      - name: Find extension-androidtools reference
+        run: grep -rn "extension-androidtools" .haxelib/ --include="*.xml" --include="*.hx" --include="*.json" --include="*.hxml" || true
+
       - name: Activate Lime 8.3.2
         if: inputs.name == 'iOS'
         run: |
