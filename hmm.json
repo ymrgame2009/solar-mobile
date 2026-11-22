@@ -35,11 +35,9 @@
       		"url": "https://github.com/polybiusproxy/hxCodec"
 		},
 		{
-			"name": "hxcpp",
-			"type": "git",
-			"dir": null,
-			"ref": "main",
-			"url": "https://github.com/AlafandyPorting/hxcpp-0.6.3"
+    		"name": "hxcpp",
+    		"type": "haxelib",
+    		"version": null
 		},
 		{
 			"name": "lime",
