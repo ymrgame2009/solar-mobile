@@ -38,20 +38,22 @@
             "name": "hxcpp",
             "type": "git",
             "dir": null,
-            "ref": "becf3f8bea42641c03b1924b40e5f5fc5dd255d1",
-            "url": "https://github.com/Prohack101010/hxcpp_ex.git"
+            "ref": "main",
+            "url": "https://github.com/AlafandyPorting/hxcpp-0.6.3"
         },
         {
             "name": "lime",
-            "type": "haxelib",
-            "version": "8.1.0"
+            "type": "git",
+            "dir": null,
+            "ref": "main",
+            "url": "https://github.com/AlafandyPorting/lime-0.6.3"
         },
         {
             "name": "linc_luajit",
             "type": "git",
             "dir": null,
-            "ref": "master",
-            "url": "https://github.com/Sirox228/linc_luajit"
+            "ref": "main",
+            "url": "https://github.com/AlafandyPorting/linc_luajit-0.6.3"
         },
         {
             "name": "openfl",
