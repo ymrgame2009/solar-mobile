@@ -119,20 +119,33 @@ class FunkinLua
                         return;
                 }
 
-                // Phase 2: dofile
-                #if sys if (logPath != null) try { dbgAppend(logPath, 'D: before dofile\n'); } catch(e:Dynamic) {} #end
+                // Phase 2: Read file with Haxe + dostring (instead of dofile which uses C fopen)
+                #if sys if (logPath != null) try { dbgAppend(logPath, 'D: before File.getContent\n'); } catch(e:Dynamic) {} #end
+                var fileContent:String = null;
                 try {
-                        var result:Dynamic = LuaL.dofile(lua, script);
-                        #if sys if (logPath != null) try { dbgAppend(logPath, 'E: after dofile result=' + result + '\n'); } catch(e:Dynamic) {} #end
+                        fileContent = File.getContent(script);
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'E: getContent OK len=' + (fileContent != null ? fileContent.length : 0) + '\n'); } catch(e:Dynamic) {} #end
+                } catch(e:Dynamic) {
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL getContent: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        return;
+                }
+
+                if (fileContent == null || fileContent.length < 1) {
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'ERROR: file empty or null\n'); } catch(e:Dynamic) {} #end
+                        return;
+                }
+
+                #if sys if (logPath != null) try { dbgAppend(logPath, 'F: before dostring\n'); } catch(e:Dynamic) {} #end
+                try {
+                        var result:Dynamic = LuaL.dostring(lua, fileContent);
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'G: after dostring result=' + result + '\n'); } catch(e:Dynamic) {} #end
                         var resultStr:String = Lua.tostring(lua, result);
                         if (resultStr != null && result != 0) {
-                                #if sys if (logPath != null) try { dbgAppend(logPath, 'ERROR dofile: ' + resultStr + '\n'); } catch(e:Dynamic) {} #end
-                                lua = null;
-                                return;
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'ERROR dostring: ' + resultStr + '\n'); } catch(e:Dynamic) {} #end
                         }
-                        #if sys if (logPath != null) try { dbgAppend(logPath, 'F: dofile OK\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'H: dostring OK\n'); } catch(e:Dynamic) {} #end
                 } catch(e:Dynamic) {
-                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL P2 dofile: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'FAIL P2 dostring: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         return;
                 }
 
