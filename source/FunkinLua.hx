@@ -112,6 +112,18 @@ class FunkinLua
                         lua = LuaL.newstate();
                         LuaL.openlibs(lua);
                         #if sys if (logPath != null) try { dbgAppend(logPath, 'B: after newstate+openlibs\n'); } catch(e:Dynamic) {} #end
+
+                        // DISABLE JIT — use interpreter only
+                        // Fixes crash on Android 10+ where SELinux blocks mmap(PROT_EXEC)
+                        // needed for JIT compilation
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B2: before jit.off()\n'); } catch(e:Dynamic) {} #end
+                        try {
+                                LuaL.dostring(lua, 'jit.off()');
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: jit.off() OK\n'); } catch(e:Dynamic) {} #end
+                        } catch(e:Dynamic) {
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: jit.off() FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        }
+
                         Lua.init_callbacks(lua);
                         #if sys if (logPath != null) try { dbgAppend(logPath, 'C: after init_callbacks\n'); } catch(e:Dynamic) {} #end
                 } catch(e:Dynamic) {
