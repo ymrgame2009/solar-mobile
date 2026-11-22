@@ -138,17 +138,30 @@ class FunkinLua
                                 #if sys if (logPath != null) try { dbgAppend(logPath, 'B5: lua_pushstring FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         }
 
-                        // Test 3: luaL_dostring with C string literal (bypasses Haxe string conversion)
-                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B6: before luaL_dostring "jit.off()" (C literal)\n'); } catch(e:Dynamic) {} #end
+                        // Test 3: luaL_loadstring ONLY (parse, no execute)
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B6: before luaL_loadstring (parse only)\n'); } catch(e:Dynamic) {} #end
                         try {
                                 #if cpp
-                                var result:Int = untyped __cpp__('luaL_dostring({0}, "jit.off()")', lua);
+                                var r1:Int = untyped __cpp__('luaL_loadstring({0}, "local x = 1")', lua);
                                 #else
-                                var result:Int = 0;
+                                var r1:Int = 0;
                                 #end
-                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: luaL_dostring result=' + result + '\n'); } catch(e:Dynamic) {} #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: loadstring result=' + r1 + '\n'); } catch(e:Dynamic) {} #end
                         } catch(e:Dynamic) {
-                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: luaL_dostring FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: loadstring FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        }
+
+                        // Test 4: lua_pcall ONLY (execute the loaded chunk)
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B8: before lua_pcall (execute)\n'); } catch(e:Dynamic) {} #end
+                        try {
+                                #if cpp
+                                var r2:Int = untyped __cpp__('lua_pcall({0}, 0, 0, 0)', lua);
+                                #else
+                                var r2:Int = 0;
+                                #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B9: pcall result=' + r2 + '\n'); } catch(e:Dynamic) {} #end
+                        } catch(e:Dynamic) {
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B9: pcall FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         }
 
                         Lua.init_callbacks(lua);
