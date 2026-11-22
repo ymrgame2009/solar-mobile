@@ -113,15 +113,42 @@ class FunkinLua
                         LuaL.openlibs(lua);
                         #if sys if (logPath != null) try { dbgAppend(logPath, 'B: after newstate+openlibs\n'); } catch(e:Dynamic) {} #end
 
-                        // DISABLE JIT — use interpreter only
-                        // Fixes crash on Android 10+ where SELinux blocks mmap(PROT_EXEC)
-                        // needed for JIT compilation
-                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B2: before jit.off()\n'); } catch(e:Dynamic) {} #end
+                        // DISABLE JIT + diagnose the crash
+                        // Try multiple approaches to find where LuaJIT breaks
+
+                        // Test 1: luaJIT_setmode via C API (no string, no Lua execution)
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B2: before luaJIT_setmode (C API)\n'); } catch(e:Dynamic) {} #end
                         try {
-                                LuaL.dostring(lua, 'jit.off()');
-                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: jit.off() OK\n'); } catch(e:Dynamic) {} #end
+                                #if cpp
+                                untyped __cpp__('luaJIT_setmode({0}, 0, 0x0200)', lua);
+                                #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: luaJIT_setmode OK\n'); } catch(e:Dynamic) {} #end
                         } catch(e:Dynamic) {
-                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: jit.off() FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B3: luaJIT_setmode FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        }
+
+                        // Test 2: lua_pushstring with C literal (tests string pushing)
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B4: before lua_pushstring (C literal)\n'); } catch(e:Dynamic) {} #end
+                        try {
+                                #if cpp
+                                untyped __cpp__('lua_pushstring({0}, "test"); lua_setglobal({0}, "testvar")', lua);
+                                #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B5: lua_pushstring OK\n'); } catch(e:Dynamic) {} #end
+                        } catch(e:Dynamic) {
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B5: lua_pushstring FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
+                        }
+
+                        // Test 3: luaL_dostring with C string literal (bypasses Haxe string conversion)
+                        #if sys if (logPath != null) try { dbgAppend(logPath, 'B6: before luaL_dostring "jit.off()" (C literal)\n'); } catch(e:Dynamic) {} #end
+                        try {
+                                #if cpp
+                                var result:Int = untyped __cpp__('luaL_dostring({0}, "jit.off()")', lua);
+                                #else
+                                var result:Int = 0;
+                                #end
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: luaL_dostring result=' + result + '\n'); } catch(e:Dynamic) {} #end
+                        } catch(e:Dynamic) {
+                                #if sys if (logPath != null) try { dbgAppend(logPath, 'B7: luaL_dostring FAILED: ' + Std.string(e) + '\n'); } catch(e:Dynamic) {} #end
                         }
 
                         Lua.init_callbacks(lua);
