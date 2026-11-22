@@ -47,11 +47,11 @@
 			"version": "8.1.0"
 		},
 		{
-			"name": "linc_luajit",
-			"type": "git",
-			"dir": null,
-			"ref": "master",
-			"url": "https://github.com/superpowers04/linc_luajit"
+    		"name": "linc_luajit",
+    		"type": "git",
+    		"dir": null,
+    		"ref": "1906c4a",
+    		"url": "https://github.com/superpowers04/linc_luajit"
 		},
 		{
 			"name": "openfl",
