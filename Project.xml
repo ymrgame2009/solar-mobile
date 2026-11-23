@@ -223,6 +223,7 @@
                 </config>
 	</section>-->
 
+	<android compile-sdk-version="35" if="android"/>
 	<android target-sdk-version="29" if="android"/>
 	<android min-sdk-version="19" if="android"/>
 
