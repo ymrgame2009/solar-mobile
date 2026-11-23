@@ -352,6 +352,9 @@ class PlayState extends MusicBeatState
         // Less laggy controls
         private var keysArray:Array<Dynamic>;
         private var controlArray:Array<String>;
+        #if mobile
+        private var mobileHoldArray:Array<Bool> = [false, false, false, false];
+        #end
 
         var precacheList:Map<String, String> = new Map<String, String>();
 
@@ -1284,6 +1287,7 @@ class PlayState extends MusicBeatState
                 moveCameraSection();
 
                 logProgress('before healthBar');
+                try {
                 healthBarBG = new AttachedSprite('healthBar');
                 healthBarBG.y = FlxG.height * 0.89;
                 healthBarBG.screenCenter(X);
@@ -1293,9 +1297,17 @@ class PlayState extends MusicBeatState
                 healthBarBG.yAdd = -4;
                 if (ClientPrefs.downScroll)
                         healthBarBG.y = 0.11 * FlxG.height;
+                logProgress('healthBarBG size: ' + healthBarBG.width + 'x' + healthBarBG.height);
 
                 healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
                         'health', 0, 2);
+                } catch(e:Dynamic) {
+                        logProgress('!!! healthBar CRASH: ' + Std.string(e));
+                        #if sys
+                        try { sys.io.File.saveContent(Sys.getCwd() + 'crash_hb.log', 'healthBar crash:\n' + Std.string(e) + '\nhealthBarBG.width=' + healthBarBG.width + '\nhealthBarBG.height=' + healthBarBG.height); } catch(e:Dynamic) {}
+                        #end
+                        healthBar = new FlxBar(FlxG.width * 0.25, FlxG.height * 0.89, RIGHT_TO_LEFT, 600, 20, this, 'health', 0, 2);
+                }
                 healthBar.scrollFactor.set();
                 // healthBar
                 healthBar.visible = !ClientPrefs.hideHud;
@@ -5116,6 +5128,9 @@ class PlayState extends MusicBeatState
         private function onButtonPress(button:TouchButton):Void
         {
                 var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
+                #if mobile
+                if (buttonCode > -1 && buttonCode < mobileHoldArray.length) mobileHoldArray[buttonCode] = true;
+                #end
 
                 if (!cpuControlled && startedCountdown && !paused && buttonCode > -1 && button.justPressed)
                 {
@@ -5211,6 +5226,9 @@ class PlayState extends MusicBeatState
         private function onButtonRelease(button:TouchButton):Void
         {
                 var buttonCode:Int = (button.IDs[0].toString().startsWith('NOTE')) ? button.IDs[0] : button.IDs[1];
+                #if mobile
+                if (buttonCode > -1 && buttonCode < mobileHoldArray.length) mobileHoldArray[buttonCode] = false;
+                #end
 
                 if (!cpuControlled && startedCountdown && !paused && buttonCode > -1)
                 {
@@ -5231,6 +5249,14 @@ class PlayState extends MusicBeatState
         {
                 // HOLDING
                 var parsedHoldArray:Array<Bool> = parseKeys();
+                #if mobile
+                if (mobileHoldArray != null) {
+                        for (i in 0...parsedHoldArray.length) {
+                                if (i < mobileHoldArray.length)
+                                        parsedHoldArray[i] = parsedHoldArray[i] || mobileHoldArray[i];
+                        }
+                }
+                #end
 
                 // TO DO: Find a better way to handle controller inputs, this should work for now
                 if (ClientPrefs.controllerMode)
