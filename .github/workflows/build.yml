@@ -86,11 +86,10 @@ jobs:
         if: startsWith(inputs.name, 'Android')
         run: |
           find .haxelib/lime -name "build.gradle" -type f | while read f; do
-            sed -i '' "s/compileSdkVersion [0-9]*/compileSdkVersion 35/g" "$f" 2>/dev/null || true
-            sed -i '' "s/compileSdk [0-9]*/compileSdk 35/g" "$f" 2>/dev/null || true
+            sed -i '' 's/compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)/compileSdkVersion 35/' "$f" 2>/dev/null || true
           done
-          echo "Modified build.gradle files:"
-          find .haxelib/lime -name "build.gradle" -type f -exec grep -l "35" {} \;
+          echo "=== Verifying changes ==="
+          find .haxelib/lime -name "build.gradle" -type f -exec grep -n "compileSdk" {} \;
 
       - name: Activate Lime 8.3.2
         if: inputs.name == 'iOS'
