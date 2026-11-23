@@ -149,7 +149,7 @@
 	<haxelib name="discord_rpc" if="DISCORD_ALLOWED"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
-	<haxelib name="extension-androidtools"/>
+	<!--haxelib name="extension-androidtools"/-->
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
