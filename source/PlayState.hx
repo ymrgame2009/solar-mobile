@@ -1555,12 +1555,13 @@ class PlayState extends MusicBeatState
                 RecalculateRating();
                 logProgress('after RecalculateRating, before precache');
 
-                // PRECACHING MISS SOUNDS BECAUSE I THINK THEY CAN LAG PEOPLE AND FUCK THEM UP IDK HOW HAXE WORKS
+                logProgress('before precacheList');
                 if (ClientPrefs.hitsoundVolume > 0)
                         precacheList.set('hitsound-${ClientPrefs.ht}', 'sound');
                 precacheList.set('missnote1', 'sound');
                 precacheList.set('missnote2', 'sound');
                 precacheList.set('missnote3', 'sound');
+                logProgress('after precacheList, before pauseMusic');
 
                 if (PauseSubState.songName != null)
                 {
@@ -1570,20 +1571,29 @@ class PlayState extends MusicBeatState
                 {
                         precacheList.set(Paths.formatToSongPath(ClientPrefs.pauseMusic), 'music');
                 }
+                logProgress('after pauseMusic, before Discord');
 
                 precacheList.set('alphabet', 'image');
+                logProgress('after alphabet precache');
 
                 #if desktop
                 // Updating Discord Rich Presence.
                 DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
                 #end
+                logProgress('after Discord, before addEventListener');
 
                 if (!ClientPrefs.controllerMode)
                 {
                         FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
                         FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
                 }
-                ModchartFuncs.loadLuaFunctions();
+                logProgress('after addEventListener, before ModchartFuncs');
+                try {
+                        ModchartFuncs.loadLuaFunctions();
+                } catch(e:Dynamic) {
+                        logProgress('ModchartFuncs CRASH: ' + Std.string(e));
+                }
+                logProgress('after ModchartFuncs, before onCreatePost');
                 logProgress('before onCreatePost');
                 callOnLuas('onCreatePost', []);
                 logProgress('after onCreatePost, before super.create');
