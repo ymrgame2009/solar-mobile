@@ -43,6 +43,7 @@ class ModchartFuncs
     {
         #if PSYCH
         #if LUA_ALLOWED
+        PlayState.logProgress('MC: loadLuaFunctions start, scripts=' + PlayState.instance.luaArray.length);
         #if !(PSYCHVERSION >= "0.7")
         for (funkin in PlayState.instance.luaArray)
         {
@@ -50,44 +51,57 @@ class ModchartFuncs
             funkin.initHaxeModule();
             #end
         #end
+            PlayState.logProgress('MC: script ' + funkin.scriptName + ' before callbacks');
             Lua_helper.add_callback(funkin.lua, 'startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1){
                 startMod(name,modClass,type,pf);
 
                 PlayState.instance.playfieldRenderer.modifierTable.reconstructTable(); //needs to be reconstructed for lua modcharts
             });
+            PlayState.logProgress('MC: after startMod');
             Lua_helper.add_callback(funkin.lua, 'setMod', function(name:String, value:Float){
                 setMod(name, value);
             });
+            PlayState.logProgress('MC: after setMod');
             Lua_helper.add_callback(funkin.lua, 'setSubMod', function(name:String, subValName:String, value:Float){
                 setSubMod(name, subValName,value);
             });
+            PlayState.logProgress('MC: after setSubMod');
             Lua_helper.add_callback(funkin.lua, 'setModTargetLane', function(name:String, value:Int){
                 setModTargetLane(name, value);
             });
+            PlayState.logProgress('MC: after setModTargetLane');
             Lua_helper.add_callback(funkin.lua, 'setModPlayfield', function(name:String, value:Int){
                 setModPlayfield(name,value);
             });
+            PlayState.logProgress('MC: after setModPlayfield');
             Lua_helper.add_callback(funkin.lua, 'addPlayfield', function(?x:Float = 0, ?y:Float = 0, ?z:Float = 0){
                 addPlayfield(x,y,z);
             });
+            PlayState.logProgress('MC: after addPlayfield');
             Lua_helper.add_callback(funkin.lua, 'removePlayfield', function(idx:Int){
                 removePlayfield(idx);
             });
+            PlayState.logProgress('MC: after removePlayfield');
             Lua_helper.add_callback(funkin.lua, 'tweenModifier', function(modifier:String, val:Float, time:Float, ease:String, ?tag:String = null){
                 tweenModifier(modifier,val,time,ease,null,tag);
             });
+            PlayState.logProgress('MC: after tweenModifier');
             Lua_helper.add_callback(funkin.lua, 'tweenModifierSubValue', function(modifier:String, subValue:String, val:Float, time:Float, ease:String, ?tag:String = null){
                 tweenModifierSubValue(modifier,subValue,val,time,ease,null,tag);
             });
+            PlayState.logProgress('MC: after tweenModifierSubValue');
             Lua_helper.add_callback(funkin.lua, 'setModEaseFunc', function(name:String, ease:String){
                 setModEaseFunc(name,ease);
             });
+            PlayState.logProgress('MC: after setModEaseFunc');
             Lua_helper.add_callback(funkin.lua, 'set', function(beat:Float, argsAsString:String){
                 set(beat, argsAsString);
             });
+            PlayState.logProgress('MC: after set');
             Lua_helper.add_callback(funkin.lua, 'ease', function(beat:Float, time:Float, easeStr:String, argsAsString:String, ?tag:String = null){
                 ease(beat, time, easeStr, argsAsString, null, tag);                
             });
+            PlayState.logProgress('MC: after ease, done with script');
             #if !(PSYCHVERSION >= "0.7") } #end
             
             #if (PSYCHVERSION >= "0.7")
