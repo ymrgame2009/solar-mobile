@@ -168,26 +168,18 @@ class GameOverSubstate extends MusicBeatSubstate
         function coolStartDeath(?volume:Float = 1):Void
         {
                 try {
-                        PlayState.logProgress('coolStartDeath: checking ' + loopSoundName);
-                        var assetPath:String = Paths.getPreloadPath('music/' + loopSoundName + '.ogg');
-                        PlayState.logProgress('coolStartDeath: assetPath=' + assetPath);
-                        #if sys
-                        // Check mod folder first (filesystem)
-                        var modPath:String = Paths.modFolders('music/' + loopSoundName + '.ogg');
-                        if (FileSystem.exists(modPath)) {
-                                PlayState.logProgress('coolStartDeath: found in mods');
-                                FlxG.sound.playMusic(modPath, volume);
-                        } else if (OpenFlAssets.exists(assetPath)) {
-                                // File is inside APK assets — use Assets API
-                                PlayState.logProgress('coolStartDeath: found in APK assets');
-                                FlxG.sound.playMusic(assetPath, volume);
-                        } else {
-                                PlayState.logProgress('coolStartDeath: not found anywhere, skipping');
+                        PlayState.logProgress('coolStartDeath: loading ' + loopSoundName + ' from shared');
+                        var snd = Paths.music(loopSoundName, 'shared');
+                        if (snd == null) {
+                                PlayState.logProgress('coolStartDeath: not in shared, trying default');
+                                snd = Paths.music(loopSoundName);
                         }
-                        #else
-                        FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
-                        #end
-                        PlayState.logProgress('coolStartDeath: OK');
+                        if (snd != null) {
+                                FlxG.sound.playMusic(snd, volume);
+                                PlayState.logProgress('coolStartDeath: OK');
+                        } else {
+                                PlayState.logProgress('coolStartDeath: sound is null, skipping');
+                        }
                 } catch(e:Dynamic) {
                         PlayState.logProgress('coolStartDeath CRASH: ' + Std.string(e));
                 }
@@ -201,17 +193,13 @@ class GameOverSubstate extends MusicBeatSubstate
                         try {
                                 boyfriend.playAnim('deathConfirm', true);
                                 FlxG.sound.music.stop();
-                                #if sys
-                                var endAsset:String = Paths.getPreloadPath('music/' + endSoundName + '.ogg');
-                                var endMod:String = Paths.modFolders('music/' + endSoundName + '.ogg');
-                                if (FileSystem.exists(endMod)) {
-                                        FlxG.sound.play(endMod);
-                                } else if (OpenFlAssets.exists(endAsset)) {
-                                        FlxG.sound.play(endAsset);
+                                try {
+                                        var endSnd = Paths.music(endSoundName, 'shared');
+                                        if (endSnd == null) endSnd = Paths.music(endSoundName);
+                                        if (endSnd != null) FlxG.sound.play(endSnd);
+                                } catch(e:Dynamic) {
+                                        PlayState.logProgress('endBullshit sound CRASH: ' + Std.string(e));
                                 }
-                                #else
-                                FlxG.sound.play(Paths.music(endSoundName));
-                                #end
                         } catch(e:Dynamic) {
                                 PlayState.logProgress('endBullshit sound CRASH: ' + Std.string(e));
                         }
