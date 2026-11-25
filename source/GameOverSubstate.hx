@@ -9,6 +9,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.FileSystem;
 #end
@@ -168,19 +169,21 @@ class GameOverSubstate extends MusicBeatSubstate
         {
                 try {
                         PlayState.logProgress('coolStartDeath: checking ' + loopSoundName);
+                        var assetPath:String = Paths.getPreloadPath('music/' + loopSoundName + '.ogg');
+                        PlayState.logProgress('coolStartDeath: assetPath=' + assetPath);
                         #if sys
-                        var path:String = Paths.getPreloadPath('music/' + loopSoundName + '.ogg');
-                        if (!FileSystem.exists(path)) {
-                                var modPath:String = Paths.modFolders('music/' + loopSoundName + '.ogg');
-                                if (FileSystem.exists(modPath)) {
-                                        path = modPath;
-                                } else {
-                                        PlayState.logProgress('coolStartDeath: file not found, skipping music');
-                                        return;
-                                }
+                        // Check mod folder first (filesystem)
+                        var modPath:String = Paths.modFolders('music/' + loopSoundName + '.ogg');
+                        if (FileSystem.exists(modPath)) {
+                                PlayState.logProgress('coolStartDeath: found in mods');
+                                FlxG.sound.playMusic(modPath, volume);
+                        } else if (OpenFlAssets.exists(assetPath)) {
+                                // File is inside APK assets — use Assets API
+                                PlayState.logProgress('coolStartDeath: found in APK assets');
+                                FlxG.sound.playMusic(assetPath, volume);
+                        } else {
+                                PlayState.logProgress('coolStartDeath: not found anywhere, skipping');
                         }
-                        PlayState.logProgress('coolStartDeath: file exists at ' + path);
-                        FlxG.sound.playMusic(path, volume);
                         #else
                         FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
                         #end
@@ -199,12 +202,12 @@ class GameOverSubstate extends MusicBeatSubstate
                                 boyfriend.playAnim('deathConfirm', true);
                                 FlxG.sound.music.stop();
                                 #if sys
-                                var endPath:String = Paths.getPreloadPath('music/' + endSoundName + '.ogg');
-                                if (!FileSystem.exists(endPath)) {
-                                        endPath = Paths.modFolders('music/' + endSoundName + '.ogg');
-                                }
-                                if (FileSystem.exists(endPath)) {
-                                        FlxG.sound.play(endPath);
+                                var endAsset:String = Paths.getPreloadPath('music/' + endSoundName + '.ogg');
+                                var endMod:String = Paths.modFolders('music/' + endSoundName + '.ogg');
+                                if (FileSystem.exists(endMod)) {
+                                        FlxG.sound.play(endMod);
+                                } else if (OpenFlAssets.exists(endAsset)) {
+                                        FlxG.sound.play(endAsset);
                                 }
                                 #else
                                 FlxG.sound.play(Paths.music(endSoundName));
