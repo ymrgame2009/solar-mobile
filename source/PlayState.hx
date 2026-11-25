@@ -1200,8 +1200,8 @@ class PlayState extends MusicBeatState
                 timeBarBG.yAdd = -4;
                 add(timeBarBG);
 
-                timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
-                        'songPercent', 0, 1);
+                timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), null, null, 0, 1);
+                timeBar.value = songPercent;
                 timeBar.scrollFactor.set();
                 timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
                 timeBar.numDivisions = 800; // How much lag this causes?? Should i tone it down to idk, 400 or 200?
@@ -1299,14 +1299,16 @@ class PlayState extends MusicBeatState
                         healthBarBG.y = 0.11 * FlxG.height;
                 logProgress('healthBarBG size: ' + healthBarBG.width + 'x' + healthBarBG.height);
 
-                healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-                        'health', 0, 2);
+                healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), null, null, 0, 2);
+                healthBar.value = health;
+                logProgress('FlxBar created OK');
                 } catch(e:Dynamic) {
                         logProgress('!!! healthBar CRASH: ' + Std.string(e));
                         #if sys
                         try { sys.io.File.saveContent(Sys.getCwd() + 'crash_hb.log', 'healthBar crash:\n' + Std.string(e) + '\nhealthBarBG.width=' + healthBarBG.width + '\nhealthBarBG.height=' + healthBarBG.height); } catch(e:Dynamic) {}
                         #end
-                        healthBar = new FlxBar(FlxG.width * 0.25, FlxG.height * 0.89, RIGHT_TO_LEFT, 600, 20, this, 'health', 0, 2);
+                        healthBar = new FlxBar(FlxG.width * 0.25, FlxG.height * 0.89, RIGHT_TO_LEFT, 600, 20, null, null, 0, 2);
+                        healthBar.value = health;
                 }
                 healthBar.scrollFactor.set();
                 // healthBar
@@ -3528,6 +3530,9 @@ class PlayState extends MusicBeatState
 
                 var iconOffset:Int = 26;
 
+                // Manually update healthBar value (no reflection tracking)
+                healthBar.value = health;
+
                 iconP1.x = healthBar.x
                         + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))
                         + (150 * iconP1.scale.x - 150) / 2
@@ -3592,6 +3597,7 @@ class PlayState extends MusicBeatState
                                         if (curTime < 0)
                                                 curTime = 0;
                                         songPercent = (curTime / songLength);
+                                        timeBar.value = songPercent;
 
                                         var songCalc:Float = (songLength - curTime);
                                         if (ClientPrefs.timeBarType == 'Time Elapsed')
