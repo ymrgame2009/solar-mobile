@@ -9,6 +9,9 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+#if sys
+import sys.FileSystem;
+#end
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -164,10 +167,23 @@ class GameOverSubstate extends MusicBeatSubstate
         function coolStartDeath(?volume:Float = 1):Void
         {
                 try {
-                        PlayState.logProgress('coolStartDeath: loading ' + loopSoundName);
-                        var mus = Paths.music(loopSoundName);
-                        PlayState.logProgress('coolStartDeath: playing');
-                        FlxG.sound.playMusic(mus, volume);
+                        PlayState.logProgress('coolStartDeath: checking ' + loopSoundName);
+                        #if sys
+                        var path:String = Paths.getPreloadPath('music/' + loopSoundName + '.ogg');
+                        if (!FileSystem.exists(path)) {
+                                var modPath:String = Paths.modFolders('music/' + loopSoundName + '.ogg');
+                                if (FileSystem.exists(modPath)) {
+                                        path = modPath;
+                                } else {
+                                        PlayState.logProgress('coolStartDeath: file not found, skipping music');
+                                        return;
+                                }
+                        }
+                        PlayState.logProgress('coolStartDeath: file exists at ' + path);
+                        FlxG.sound.playMusic(path, volume);
+                        #else
+                        FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
+                        #end
                         PlayState.logProgress('coolStartDeath: OK');
                 } catch(e:Dynamic) {
                         PlayState.logProgress('coolStartDeath CRASH: ' + Std.string(e));
@@ -182,7 +198,17 @@ class GameOverSubstate extends MusicBeatSubstate
                         try {
                                 boyfriend.playAnim('deathConfirm', true);
                                 FlxG.sound.music.stop();
+                                #if sys
+                                var endPath:String = Paths.getPreloadPath('music/' + endSoundName + '.ogg');
+                                if (!FileSystem.exists(endPath)) {
+                                        endPath = Paths.modFolders('music/' + endSoundName + '.ogg');
+                                }
+                                if (FileSystem.exists(endPath)) {
+                                        FlxG.sound.play(endPath);
+                                }
+                                #else
                                 FlxG.sound.play(Paths.music(endSoundName));
+                                #end
                         } catch(e:Dynamic) {
                                 PlayState.logProgress('endBullshit sound CRASH: ' + Std.string(e));
                         }
