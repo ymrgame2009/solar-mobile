@@ -1593,7 +1593,7 @@ class PlayState extends MusicBeatState
                 } catch(e:Dynamic) {
                         logProgress('ModchartFuncs CRASH: ' + Std.string(e));
                 }
-                logProgress('after ModchartFuncs, before onCreatePost');
+                logProgress('after ModchartFuncs');
                 logProgress('before onCreatePost');
                 callOnLuas('onCreatePost', []);
                 logProgress('after onCreatePost, before super.create');
