@@ -327,7 +327,6 @@ class PlayState extends MusicBeatState
         // Discord RPC variables
         var storyDifficultyText:String = "";
         var detailsText:String = "";
-        var detailsPausedText:String = "";
         #end
 
         // Achievement shit
@@ -1326,19 +1325,25 @@ class PlayState extends MusicBeatState
                         add(healthBarBG);
                 }
 
+                logProgress('before icons');
+                logProgress('before icons');
                 iconP1 = new HealthIcon(boyfriend.healthIcon, true);
                 iconP1.y = healthBar.y - 75;
                 iconP1.visible = !ClientPrefs.hideHud;
                 iconP1.alpha = ClientPrefs.healthBarAlpha;
                 add(iconP1);
 
+                logProgress('after iconP1, before iconP2');
                 iconP2 = new HealthIcon(dad.healthIcon, false);
                 iconP2.y = healthBar.y - 75;
                 iconP2.visible = !ClientPrefs.hideHud;
                 iconP2.alpha = ClientPrefs.healthBarAlpha;
                 add(iconP2);
+                logProgress('before reloadHealthBarColors');
                 reloadHealthBarColors();
+                logProgress('after reloadHealthBarColors');
 
+                logProgress('before scoreTxt');
                 scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
                 scoreTxt.setFormat(Paths.font("funkin.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
                 scoreTxt.scrollFactor.set();
@@ -1346,6 +1351,7 @@ class PlayState extends MusicBeatState
                 scoreTxt.visible = !ClientPrefs.hideHud;
                 add(scoreTxt);
 
+                logProgress('before botplayTxt');
                 botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
                 botplayTxt.setFormat(Paths.font("funkin.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
                 botplayTxt.scrollFactor.set();
@@ -1357,6 +1363,7 @@ class PlayState extends MusicBeatState
                         botplayTxt.y = timeBarBG.y - 78;
                 }
 
+                logProgress('before cameras');
                 strumLineNotes.cameras = [camHUD];
                 grpNoteSplashes.cameras = [camHUD];
                 notes.cameras = [camHUD];
@@ -1376,6 +1383,7 @@ class PlayState extends MusicBeatState
                 // UI_camera.zoom = 1;
 
                 // cameras = [FlxG.cameras.list[1]];
+                logProgress('before notetype scripts');
                 startingSong = true;
 
                 #if LUA_ALLOWED
@@ -1433,6 +1441,7 @@ class PlayState extends MusicBeatState
                 eventPushedMap.clear();
                 eventPushedMap = null;
 
+                logProgress('before song scripts');
                 // SONG SPECIFIC SCRIPTS
                 #if LUA_ALLOWED
                 var filesPushed:Array<String> = [];
@@ -1542,7 +1551,9 @@ class PlayState extends MusicBeatState
                 {
                         startCountdown();
                 }
+                logProgress('before RecalculateRating');
                 RecalculateRating();
+                logProgress('after RecalculateRating, before precache');
 
                 // PRECACHING MISS SOUNDS BECAUSE I THINK THEY CAN LAG PEOPLE AND FUCK THEM UP IDK HOW HAXE WORKS
                 if (ClientPrefs.hitsoundVolume > 0)
@@ -1573,7 +1584,9 @@ class PlayState extends MusicBeatState
                         FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
                 }
                 ModchartFuncs.loadLuaFunctions();
+                logProgress('before onCreatePost');
                 callOnLuas('onCreatePost', []);
+                logProgress('after onCreatePost, before super.create');
 
                 super.create();
                 logProgress('after super.create');
