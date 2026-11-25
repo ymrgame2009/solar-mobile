@@ -30,7 +30,7 @@ class PauseSubState extends MusicBeatSubstate
 		'Change Difficulty',
 		'Gameplay Modifiers',
 		#if mobileC 'Chart Editor' #end,
-		//#if mobileC 'Modchart Editor' #end,
+		#if mobileC 'Modchart Editor' #end,
 		'Options',
 		'Exit'
 	];
@@ -361,9 +361,9 @@ class PauseSubState extends MusicBeatSubstate
 		            MusicBeatState.switchState(new editors.ChartingState());
 		            PlayState.chartingMode = true;
 
-				/*case 'Modchart Editor':
-		            MusicBeatState.switchState(new ModchartEditorState());
-		            PlayState.chartingMode = true;*/
+				case 'Modchart Editor':
+		            MusicBeatState.switchState(new modchart.modcharting.ModchartEditorState());
+		            PlayState.chartingMode = true;
 
 				case "Options":
 					FlxG.switchState(new options.OptionsState());
