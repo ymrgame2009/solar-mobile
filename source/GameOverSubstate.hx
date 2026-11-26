@@ -177,7 +177,9 @@ class GameOverSubstate extends MusicBeatSubstate
                                 snd = Paths.music(loopSoundName);
                         }
                         if (snd != null) {
-                                FlxG.sound.playMusic(snd, volume);
+                                // Use FlxG.sound.play with looped=true instead of playMusic
+                                // playMusic can crash on ARM64 when setting up the loop
+                                FlxG.sound.music = FlxG.sound.play(snd, volume, true);
                                 PlayState.logProgress('coolStartDeath: OK');
                         } else {
                                 PlayState.logProgress('coolStartDeath: sound is null, skipping');
