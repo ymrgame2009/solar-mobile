@@ -61,7 +61,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
                 camFollow = new FlxPoint(boyfriend.getGraphicMidpoint().x, boyfriend.getGraphicMidpoint().y);
 
-                FlxG.sound.play(Paths.sound(deathSoundName));
+                var deathSnd = Paths.sound(deathSoundName, 'shared');
+                if (deathSnd == null) deathSnd = Paths.sound(deathSoundName);
+                if (deathSnd != null) FlxG.sound.play(deathSnd);
                 Conductor.changeBPM(100);
                 // FlxG.camera.followLerp = 1;
                 // FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
