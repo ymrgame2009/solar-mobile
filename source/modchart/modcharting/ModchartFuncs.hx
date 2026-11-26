@@ -51,6 +51,10 @@ class ModchartFuncs
             funkin.initHaxeModule();
             #end
         #end
+            if (funkin.lua == null || funkin.scriptName == null || funkin.scriptName.length < 1) {
+                PlayState.logProgress('MC: skipping invalid script (lua null or empty name)');
+                continue;
+            }
             PlayState.logProgress('MC: script ' + funkin.scriptName + ' before callbacks');
             Lua_helper.add_callback(funkin.lua, 'startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1){
                 startMod(name,modClass,type,pf);
