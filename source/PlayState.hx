@@ -1601,26 +1601,29 @@ class PlayState extends MusicBeatState
                 super.create();
                 logProgress('after super.create');
 
-                cacheCountdown();
-                cachePopUpScore();
-                for (key => type in precacheList)
-                {
-                        // trace('Key $key is type $type');
-                        switch (type)
+                try { cacheCountdown(); logProgress('after cacheCountdown'); } catch(e:Dynamic) { logProgress('cacheCountdown CRASH: ' + e); }
+                try { cachePopUpScore(); logProgress('after cachePopUpScore'); } catch(e:Dynamic) { logProgress('cachePopUpScore CRASH: ' + e); }
+                try {
+                        logProgress('before precache loop, items=' + precacheList.size());
+                        for (key => type in precacheList)
                         {
-                                case 'image':
-                                        Paths.image(key);
-                                case 'sound':
-                                        Paths.sound(key);
-                                case 'music':
-                                        Paths.music(key);
+                                try {
+                                        switch (type)
+                                        {
+                                                case 'image': Paths.image(key);
+                                                case 'sound': Paths.sound(key);
+                                                case 'music': Paths.music(key);
+                                        }
+                                } catch(e:Dynamic) { logProgress('precache item CRASH: ' + key + ' (' + type + ') - ' + e); }
                         }
-                }
+                        logProgress('after precache loop');
+                } catch(e:Dynamic) { logProgress('precache loop CRASH: ' + e); }
 
                 CustomFadeTransition.nextCamera = camOther;
+                logProgress('after CustomFadeTransition');
 
                 #if mobile
-                addMobileControls();
+                try { addMobileControls(); } catch(e:Dynamic) { logProgress('addMobileControls2 CRASH: ' + e); }
                 #if ios
                 addVirtualPad(NONE, P);
                 #end
