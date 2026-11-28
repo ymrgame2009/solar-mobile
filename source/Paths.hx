@@ -157,6 +157,28 @@ class Paths
                 currentLevel = name.toLowerCase();
         }
 
+        #if mobile
+        static var _cwdLogged:Bool = false;
+        public static function logCwd() {
+                if (_cwdLogged) return;
+                _cwdLogged = true;
+                try {
+                        var cwd:String = Sys.getCwd();
+                        var modsExists:Bool = FileSystem.exists(cwd + 'mods');
+                        if (!FileSystem.exists(cwd + 'logs'))
+                                FileSystem.createDirectory(cwd + 'logs');
+                        var f = File.append(cwd + 'logs/path_debug.log', false);
+                        f.writeString('CWD: ' + cwd + '\n');
+                        f.writeString('mods/ exists: ' + modsExists + '\n');
+                        if (modsExists) {
+                                var contents:Array<String> = FileSystem.readDirectory(cwd + 'mods');
+                                f.writeString('mods/ contents: ' + contents.join(', ') + '\n');
+                        }
+                        f.close();
+                } catch(e:Dynamic) {}
+        }
+        #end
+
         public static function getPath(file:String, type:AssetType, ?library:Null<String> = null)
         {
                 if (library != null)
@@ -175,6 +197,11 @@ class Paths
                         if (OpenFlAssets.exists(levelPath, type))
                                 return levelPath;
                 }
+
+                // Always check shared library as fallback (fixes missing sounds/images on mobile)
+                var sharedPath:String = getLibraryPathForce(file, "shared");
+                if (OpenFlAssets.exists(sharedPath, type))
+                        return sharedPath;
 
                 return getPreloadPath(file);
         }
@@ -571,6 +598,9 @@ class Paths
         }*/
 
         static public function modFolders(key:String) {
+                #if mobile
+                logCwd();
+                #end
                 if(currentModDirectory != null && currentModDirectory.length > 0) {
                         var fileToCheck:String = mods(currentModDirectory + '/' + key);
                         if(FileSystem.exists(fileToCheck)) {
