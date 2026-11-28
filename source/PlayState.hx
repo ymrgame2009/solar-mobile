@@ -1605,6 +1605,9 @@ class PlayState extends MusicBeatState
                 try { cacheCountdown(); logProgress('after cacheCountdown'); } catch(e:Dynamic) { logProgress('cacheCountdown CRASH: ' + e); }
                 try { cachePopUpScore(); logProgress('after cachePopUpScore'); } catch(e:Dynamic) { logProgress('cachePopUpScore CRASH: ' + e); }
                 #end
+                #if mobile
+                logProgress('precache loop skipped on mobile');
+                #else
                 try {
                         logProgress('before precache loop');
                         for (key => type in precacheList)
@@ -1620,6 +1623,7 @@ class PlayState extends MusicBeatState
                         }
                         logProgress('after precache loop');
                 } catch(e:Dynamic) { logProgress('precache loop CRASH: ' + e); }
+                #end
 
                 CustomFadeTransition.nextCamera = camOther;
                 logProgress('after CustomFadeTransition');
