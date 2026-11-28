@@ -8,14 +8,16 @@
             "url": "https://github.com/Aidan63/linc_discord-rpc"
         },
         {
-            "name": "flixel",
-            "type": "haxelib",
-            "version": "5.2.2"
+            "name": "extension-androidtools",
+            "type": "git",
+            "dir": null,
+            "ref": "main",
+            "url": "https://github.com/AlafandyPorting/extension-androidtools-legacy"
         },
         {
             "name": "flixel-addons",
             "type": "haxelib",
-            "version": "3.0.2"
+            "version": "3.2.0"
         },
         {
             "name": "flixel-ui",
@@ -23,16 +25,21 @@
             "version": "2.5.0"
         },
         {
+            "name": "flixel",
+            "type": "haxelib",
+            "version": "5.5.0"
+        },
+        {
             "name": "hscript",
             "type": "haxelib",
-            "version": "2.5.0"
+            "version": "2.7.0"
         },
         {
             "name": "hxCodec",
             "type": "git",
             "dir": null,
             "ref": "main",
-            "url": "https://github.com/AlafandyPorting/hxCodec"
+            "url": "https://github.com/polybiusproxy/hxCodec"
         },
         {
             "name": "hxcpp",
@@ -58,19 +65,7 @@
         {
             "name": "openfl",
             "type": "haxelib",
-            "version": "9.2.2"
-        },
-        {
-            "name": "flixel-tools",
-            "type": "haxelib",
-            "version": "1.5.1"
-        },
-        {
-            "name": "flxanimate",
-            "type": "git",
-            "dir": null,
-            "ref": "dev",
-            "url": "https://github.com/ShadowMario/flxanimate.git"
+            "version": "9.5.1"
         }
     ]
 }
