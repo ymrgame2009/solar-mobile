@@ -1604,7 +1604,7 @@ class PlayState extends MusicBeatState
                 try { cacheCountdown(); logProgress('after cacheCountdown'); } catch(e:Dynamic) { logProgress('cacheCountdown CRASH: ' + e); }
                 try { cachePopUpScore(); logProgress('after cachePopUpScore'); } catch(e:Dynamic) { logProgress('cachePopUpScore CRASH: ' + e); }
                 try {
-                        logProgress('before precache loop, items=' + precacheList.size());
+                        logProgress('before precache loop');
                         for (key => type in precacheList)
                         {
                                 try {
