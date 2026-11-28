@@ -380,11 +380,9 @@ class PlayState extends MusicBeatState
                 {
                         if (!sys.FileSystem.exists('logs'))
                                 sys.FileSystem.createDirectory('logs');
-                        var logPath:String = 'logs/playstate.log';
-                        var existing:String = '';
-                        if (sys.FileSystem.exists(logPath))
-                                existing = sys.io.File.getContent(logPath);
-                        sys.io.File.saveContent(logPath, existing + Date.now().toString() + ': ' + msg + '\n');
+                        var f = sys.io.File.append('logs/playstate.log', false);
+                        f.writeString(Date.now().toString() + ': ' + msg + '\n');
+                        f.close();
                 }
                 catch (e:Dynamic) {}
                 #end
@@ -1601,8 +1599,12 @@ class PlayState extends MusicBeatState
                 super.create();
                 logProgress('after super.create');
 
+                #if mobile
+                logProgress('cacheCountdown + cachePopUpScore skipped on mobile');
+                #else
                 try { cacheCountdown(); logProgress('after cacheCountdown'); } catch(e:Dynamic) { logProgress('cacheCountdown CRASH: ' + e); }
                 try { cachePopUpScore(); logProgress('after cachePopUpScore'); } catch(e:Dynamic) { logProgress('cachePopUpScore CRASH: ' + e); }
+                #end
                 try {
                         logProgress('before precache loop');
                         for (key => type in precacheList)
